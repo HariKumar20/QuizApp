@@ -1,0 +1,70 @@
+{
+  "questionsData": [
+    {
+      "question_id": "fdsfss",
+      "question": "Sun rises at?",
+      "options": [
+        {"option_id": "sdfs", "option": "West"},
+        {"option_id": "fdssfs", "option": "East"},
+        {"option_id": "fdssfsfds", "option": "North"},
+        {"option_id": "fdsfssfs", "option": "South"}
+      ],
+      "correct_option": "fdssfs"
+    },
+    {
+      "question_id": "fdsgdfdtgdgfss",
+      "question": "Capital of India?",
+      "options": [
+        {"option_id": "sdadssdfs", "option": "Hyderabad"},
+        {"option_id": "uagd67ds", "option": "Mumbai"},
+        {"option_id": "76atdgutdu", "option": "New Delhi"},
+        {"option_id": "iugduys9", "option": "Bangalore"}
+      ],
+      "correct_option": "76atdgutdu"
+    },
+    {
+      "question_id": "bckkguszds",
+      "question": "National game of India?",
+      "options": [
+        {"option_id": "bvhcxv", "option": "Cricket"},
+        {"option_id": "jsbhdsfk", "option": "Foot ball"},
+        {"option_id": "iusyfihbjfs", "option": "Chess"},
+        {"option_id": "uf8isb8is", "option": "Hockey"}
+      ],
+      "correct_option": "uf8isb8is"
+    },
+    {
+      "question_id": "mshcugsjsyfd",
+      "question": "National animal of India?",
+      "options": [
+        {"option_id": "mdisgdyfsujgdauv", "option": "Tiger"},
+        {"option_id": "vuhfh", "option": "Lion"},
+        {"option_id": "vcysacdhf", "option": "Cheetah"},
+        {"option_id": "kdhaihksdbf", "option": "Rhino"}
+      ],
+      "correct_option": "mdisgdyfsujgdauv"
+    },
+    {
+      "question_id": "fdstrgdhfsdfss",
+      "question": "How many states in India?",
+      "options": [
+        {"option_id": "9oikbdjsgduygs", "option": "21"},
+        {"option_id": "hjfsdytrs6", "option": "22"},
+        {"option_id": "hjusgfdyut7", "option": "28"},
+        {"option_id": "76yrafdygvsg", "option": "29"}
+      ],
+      "correct_option": "76yrafdygvsg"
+    },
+    {
+      "question_id": "xghfytdytxfg",
+      "question": "Capital of Telangana?",
+      "options": [
+        {"option_id": "xtdgb", "option": "Allahbad"},
+        {"option_id": "tdtrcfg", "option": "Hyderabad"},
+        {"option_id": "ohcgdd", "option": "Bangalore"},
+        {"option_id": "tretvghd", "option": "Adilabad"}
+      ],
+      "correct_option": "tdtrcfg"
+    }
+  ]
+}
