@@ -1,70 +1,57 @@
-import React, { useEffect, useState } from "react";
-import { Text ,View ,StyleSheet, FlatList } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, {useContext, useEffect, useState} from 'react';
+import {Text, View, StyleSheet, FlatList} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MyContext } from './App';
 
-function PreviousScore({navigation})
-{
-    const [userData ,setUserData]=useState([]);
+function PreviousScore({navigation}) {
+    const {scoreDataListParsed} = useContext(MyContext);
+    console.log(scoreDataListParsed);
 
-    useEffect(()=>
-    {
-        getData();
-    })
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Previous Scores List</Text>
 
-    const getData = async()=>
-    {
-    try
-    {
-       const scoresData = await AsyncStorage.getItem('userScoreList');
-       const scoresDataParsed = JSON.parse(scoresData);
-       setUserData(scoresDataParsed);
-       
-    
-
-
-    }
-        catch(e){
-                console.log('The Error is ',e);
-        } 
-    }
-    
-    return(
-        <View style={styles.container}>
-            <Text style={styles.title}>Previous Scores List</Text>
-
-                <FlatList data={userData} renderItem={({item})=> 
-                <View style={styles.scoreview}>
-                <Text style={styles.scoretext}>{item.nameData}</Text>
-                <Text style={styles.scoretext}>{item.scoreData}</Text>
-                </View> }/>
-        </View>
-    )
-
-    
+      <FlatList
+        data={scoreDataListParsed}
+        renderItem={({item}) => (
+          <View style={styles.scorecard}>
+          <View style={styles.scoreview}>
+            <Text style={styles.scoretext}>{item.nameData}</Text>
+            <Text style={styles.scoretext}>{item.scoreData}</Text>
+          </View>
+          </View>
+        )}
+      />
+    </View>
+  );
 }
 
-export default PreviousScore
+export default PreviousScore;
 
 const styles = StyleSheet.create({
-        title :
-        {
-            fontSize : 30,
-            textAlign:'center',
-            marginTop : 10,
-            color : 'steelblue',
-        },
-        scoretext :
-        {
-            fontSize : 20,
-            color :'slategray',
-            margin : 10,
-
-        },
-        scoreview :
-       {
-        flexDirection :'row',
-        justifyContent : 'center',
-       }
-
-})
-
+  title: {
+    fontSize: 30,
+    textAlign: 'center',
+    marginTop: 10,
+    marginBottom : 30,
+    color: 'steelblue',
+  },
+  scoretext: {
+    fontSize: 20,
+    color: 'white',
+    margin: 10,
+  },
+  scoreview: {
+    flexDirection: 'row',
+    justifyContent :'space-around',
+  },
+  scorecard :
+  {
+    height : 60,
+    width : 350,
+    backgroundColor : 'steelblue',
+    borderRadius : 20,
+    marginLeft : 30,
+    marginBottom : 20,
+  }
+});

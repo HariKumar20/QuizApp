@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, Text, Image, TouchableOpacity, Alert} from 'react-native';
+import React, {createContext, useState} from 'react';
+import {View, StyleSheet, Text, Image, TouchableOpacity ,Modal ,Alert} from 'react-native';
+import NameInput from './nameInput';
 import QuestionsPage from './questionsPage';
-import DialogInput from 'react-native-dialog-input';
+
 
 function QuizHomePage({navigation}) {
-  const alertName = () => {
-    Alert.alert('What is Your Name?');
-  };
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={require('./quizlogo.png')} />
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     backgroundColor : 'steelblue',
     borderRadius:50,
     marginLeft:60,
-    marginTop: 140,
+    marginTop: 200,
   },
   scorebutton:
   {
