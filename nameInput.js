@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, createContext, useContext} from 'react';
 import {
   Text,
   View,
@@ -6,21 +6,19 @@ import {
   StyleSheet,
   TextInput,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { firebase } from '@react-native-firebase/database';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import database from '@react-native-firebase/database';
+import {MyContext} from './App';
 
-function NameInput({navigation, modalVisible, modalDisable}) {
-  const [userName, setUser] = useState('');
-  useEffect(() => {
-    console.log('name input use effect');
-  }, []);
 
-  const storeName = async value => {
-    try {
-      setUser(value);
-      await AsyncStorage.setItem('name', value);
-    } catch (e) {
-      console.log('The error is ', e);
-    }
+
+function NameInput({navigation}) {
+  const {userName, setUsername} = useContext(MyContext);
+  const [inputUserName, setInputUserName] = useState('');
+  const storeName = value => {
+    setInputUserName(value);
+    setUsername(value);
   };
 
   return (
@@ -42,12 +40,14 @@ function NameInput({navigation, modalVisible, modalDisable}) {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             onPress={() => {
-              navigation.navigate('questionPage', {inputName: userName});
+              navigation.navigate('questionPage', {inputName: inputUserName});
             }}
-            disabled={userName == ''}
-            style={userName == '' ? styles.trueOpactity : styles.falseOpacity}>
+            disabled={inputUserName == ''}
+            style={
+              inputUserName == '' ? styles.trueOpactity : styles.falseOpacity
+            }>
             <View style={styles.submitbutton}>
               <Text style={styles.submittext}>Submit</Text>
             </View>
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     marginLeft: 50,
     marginTop: 200,
     backgroundColor: 'aliceblue',
+    borderRadius: 30,
   },
   inputText: {
     borderBottomWidth: 1,
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
   cancelbutton: {
     height: 50,
     width: 90,
-    backgroundColor: 'steelblue',
+    backgroundColor: 'royalblue',
     borderRadius: 10,
     marginTop: 20,
     marginLeft: 20,
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
   submitbutton: {
     height: 50,
     width: 90,
-    backgroundColor: 'steelblue',
+    backgroundColor: 'royalblue',
     borderRadius: 10,
     marginTop: 20,
     marginRight: 20,

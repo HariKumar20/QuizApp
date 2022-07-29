@@ -1,26 +1,51 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import objectData from './questionsObject.json';
+import {MyContext} from './App';
+import {firebase} from '@react-native-firebase/database';
+import database from '@react-native-firebase/database';
+import { useSelector , useDispatch } from 'react-redux'
+import { setUserScore } from './createSlice';
 
 function ScoreCalculate({navigation, route}) {
   var score = 0;
-  const [objectData , setData ] =useState([]);
-  const [result ,setResult] = useState(0);
+  const [objectData, setData] = useState([]);
+  // const [result, setResult] = useState(0);
+  const [loader , setLoader] = useState(1);
+  const {userName, userId} = useContext(MyContext);
+  const userResult = useSelector((state)=> state.userscore.result);
+  const dispatch = useDispatch();
+
+  console.log(userId);
+  const storeData = (score, answers, id, name) => {
+    console.log('hiii');
+    const newReference = database().ref(id).push();
+
+    newReference
+      .set({
+        username: name,
+        userscore: score,
+        useranswers: answers,
+      })
+      .then(() => console.log('Data updated.'));
+  };
 
   const gettingApiData = async () => {
     try {
-      const response = await fetch('https://quiz-data.free.beeceptor.com');
+      const response = await fetch(
+        'https://6295e05175c34f1f3b23964b.mockapi.io/getData',
+      );
       const jsonData = await response.json();
+      setLoader(0);
       setData(jsonData.questionsData);
       for (let i = 0; i < jsonData.questionsData.length; i++) {
-        console.log('Inside Loop')
+        console.log('Inside Loop');
         if (
           route.params.answers[jsonData.questionsData[i].question] ==
           jsonData.questionsData[i].correct_option
@@ -28,7 +53,8 @@ function ScoreCalculate({navigation, route}) {
           score++;
         }
       }
-      setResult(score);
+      dispatch(setUserScore(score));
+      storeData(score, route.params.answers, userId, userName);
     } catch (error) {
       console.log('Error : ', error);
     }
@@ -38,38 +64,16 @@ function ScoreCalculate({navigation, route}) {
     gettingApiData();
   }, []);
 
-  const storeData = async value => {
-    try {
-      await AsyncStorage.setItem('score', value.toString());
-    } catch (e) {
-      console.log('The Error is ', e);
-    }
-  };
-
-  const appendUserData = async () => {
-    try {
-      const nameData = await AsyncStorage.getItem('name');
-      const scoreData = await AsyncStorage.getItem('score');
-      if (await AsyncStorage.getItem('userScoreList')) {
-        const scoreListAsync = await AsyncStorage.getItem('userScoreList');
-        const scoreListAsyncParsed = JSON.parse(scoreListAsync);
-        scoreListAsyncParsed.push({nameData, scoreData});
-        const stringifiedAsyncParsed = JSON.stringify(scoreListAsyncParsed);
-        await AsyncStorage.setItem('userScoreList', stringifiedAsyncParsed);
-      } else {
-        scoreList.push({nameData, scoreData});
-        const stringifyScoreList = JSON.stringify(scoreList);
-        await AsyncStorage.setItem('userScoreList', stringifyScoreList);
-      }
-    } catch (e) {}
-  };
-
-  storeData(score);
-  appendUserData();
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.scoreText}>Your Score is {result}</Text>
+  return (<View style={styles.container}>
+    {
+      loader ? (
+    <View style={styles.loadview}>
+      <ActivityIndicator size="large" color="blue" />
+    </View>
+    ):
+    (
+      <View style={styles.container}>
+      <Text style={styles.scoreText}>Your Score is {userResult}</Text>
       <ScrollView>
         {objectData.map((questionIndex, index) => (
           <View style={styles.questionView} key={index}>
@@ -109,9 +113,10 @@ function ScoreCalculate({navigation, route}) {
               </Text>
             ))}
           </View>
-        ))}
+        ))}</ScrollView>
+
         <View style={styles.footer}>
-          <TouchableOpacity onPress={() => navigation.navigate('nameInput')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
             <View style={styles.taketest}>
               <Text style={styles.testtext}>Take Test</Text>
             </View>
@@ -123,17 +128,20 @@ function ScoreCalculate({navigation, route}) {
             </View>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <View style={styles.homebutton}>
-            <Text style={styles.hometext}>Home</Text>
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
-  );
-}
+        </View>
+      
+    )
+              }
+    </View>)
+  }
+  
+
 
 const styles = StyleSheet.create({
+  container :
+  {
+    flex : 1,
+  },
   scoretext: {
     fontSize: 20,
   },
@@ -170,47 +178,40 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   taketest: {
-    height: 80,
-    width: 150,
+    height: 60,
+    width: 120,
     backgroundColor: 'steelblue',
-    marginBottom: 30,
-    marginLeft: 30,
+    marginBottom: 10,
     borderRadius: 10,
   },
   prevscore: {
-    height: 80,
-    width: 150,
+    height: 60,
+    width: 120,
     backgroundColor: 'steelblue',
-    marginBottom: 30,
-    marginRight: 30,
+    marginBottom: 10,
     borderRadius: 10,
   },
   testtext: {
     fontSize: 20,
     color: 'white',
     textAlign: 'center',
-    marginTop: 25,
+    marginTop: 20,
   },
   questionresponse: {
     fontSize: 20,
     color: 'green',
     margin: 20,
   },
-  homebutton: {
-    height: 80,
-    width: 180,
-    backgroundColor: 'steelblue',
-    justifyContent: 'space-around',
-    marginBottom: 80,
-    borderRadius: 10,
-    marginLeft: 120,
-  },
-  hometext: {
-    fontSize: 20,
-    textAlign: 'center',
-    marginTop: 8,
-    color: 'white',
-  },
+  loadview: {
+    height: 100,
+    width: 100,
+    backgroundColor: 'slategrey',
+    borderRadius: 30,
+    justifyContent: 'center',
+    marginTop: 250,
+    marginLeft: 150,
+    opacity: 0.8,
+  }
 });
 
 export default ScoreCalculate;

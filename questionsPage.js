@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
-  Flatlist,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
@@ -30,7 +29,7 @@ function QuestionsPage({navigation, route}) {
     try {
       console.log('Calling API');
       const response = await fetch(
-        'https://6295e05175c34f1f3b23964b.mockapi.io/getData',
+        'https://6295e05175c34f1f3b23964b.mockapi.io/getData'
       );
       const jsonData = await response.json();
       console.log(jsonData);
@@ -280,7 +279,7 @@ const styles = StyleSheet.create({
   prevbutton: {
     height: 60,
     width: 120,
-    backgroundColor: 'steelblue',
+    backgroundColor: 'royalblue',
     borderRadius: 15,
     marginLeft: 20,
   },
@@ -293,7 +292,7 @@ const styles = StyleSheet.create({
   nextbutton: {
     height: 60,
     width: 120,
-    backgroundColor: 'steelblue',
+    backgroundColor: 'royalblue',
     borderRadius: 15,
     marginRight: 15,
   },
@@ -312,7 +311,7 @@ const styles = StyleSheet.create({
   submitstyle: {
     height: 60,
     width: 120,
-    backgroundColor: 'steelblue',
+    backgroundColor: 'royalblue',
     borderRadius: 15,
     marginRight: 15,
     justifyContent: 'center',
